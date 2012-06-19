@@ -4,7 +4,7 @@ require "fracture/version"
 
 Gem::Specification.new do |s|
   s.name        = "fracture"
-  s.version     = Fracture::VERSION
+  s.version     = FractureVersion::VERSION
   s.authors     = ["Nigel Rausch"]
   s.email       = ["nigelr@brisbanerails.com"]
   s.homepage    = ""
@@ -21,4 +21,5 @@ Gem::Specification.new do |s|
   # specify any dependencies here; for example:
   # s.add_development_dependency "rspec"
   # s.add_runtime_dependency "rest-client"
+  s.add_runtime_dependency "rspec"
 end

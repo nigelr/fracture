@@ -9,11 +9,13 @@ class Fracture
 
   def self.define_text label, *items
     @all ||= {}
+    raise "#{label} has already been defined" if @all[label.to_s]
     @all[label.to_s] = self.new(label, items.flatten, true)
   end
 
   def self.define_selector label, *items
     @all ||= {}
+    raise "#{label} has already been defined" if @all[label.to_s]
     @all[label.to_s] = self.new(label, items.flatten, false)
   end
 
@@ -21,21 +23,25 @@ class Fracture
     !!is_text
   end
 
-  def self.find labels
-    if labels.is_a? Array
-      labels.map do |label|
-        ret = @all[label.to_s]
-        raise "Fracture with Label of '#{label}' was not found" unless ret
-      end
-    else
-      ret = @all[labels.to_s]
-      raise "Fracture with Label of '#{labels}' was not found" unless ret
-    end
+  def self.find label
+    #if labels.is_a? Array
+    #  ret = []
+    #  labels.map do |label|
+    #    p label
+    #    ret = all[label.to_s]
+    #    raise "Fracture with Label of '#{label}' was not found" unless ret
+    #  end
+    #  p ret
+    #else
+      raise "No Fractures have been defined" if all.empty?
+      ret = all[label.to_s]
+      raise "Fracture with Label of '#{label}' was not found" unless ret
+    #end
     ret
   end
 
   def self.all
-    @all
+    @all || {}
   end
 
   def self.clear
