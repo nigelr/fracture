@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Nigel Rausch"]
   s.email       = ["nigelr@brisbanerails.com"]
   s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.summary     = %q{Unified View testing within Views or Controllers for RSpec}
+  s.description = %q{Fracture allows you to define and group view text or selectors in one place (at the top of a spec) and then refer to them with labels. This prevents issues when checking for existence and non existence of text/selectors if the views value changes only one spec will fail, using fracture you will update both instances}
 
   s.rubyforge_project = "fracture"
 
