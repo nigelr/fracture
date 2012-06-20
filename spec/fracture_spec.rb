@@ -1,5 +1,7 @@
 require "rspec"
 require "fracture/fracture"
+require 'nokogiri'
+
 
 describe Fracture do
 
@@ -41,6 +43,7 @@ describe Fracture do
 
     context "reuse of same text or selector" do
       it "should display warning when same text is defined"
+      it "should display warning when same label is defined"
     end
 
     describe "#find" do
@@ -57,8 +60,16 @@ describe Fracture do
       context "should return all Fractures" do
         subject {Fracture.all }
         its(:length) {should == 4}
-        it
+        its(:keys) {should =~ ["a", "bc", "x", "yz"]}
       end
+    end
+
+    #TODO move from matcher_spec
+    describe "test_fracture"
+
+    describe ".do_check" do
+      it("should find it") { @first.do_check("z a b", "a").should be_true }
+      it("should not find it") { @first.do_check("z b", "a").should be_false }
     end
   end
 end

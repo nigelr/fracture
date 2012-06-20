@@ -69,13 +69,17 @@ def common_error(actual, results)
   errors += "\non page of\n #{actual}"
 end
 
-#RSpec::Matchers.define :have_form do
 RSpec::Matchers.define :have_a_form do
   match do |page|
     page = Nokogiri::HTML.parse(page)
     @edit_found = page.at("input[type='hidden'][name='_method'][value='put']")
     @has_form = page.at("form[method='post']")
-    @found_action = page.at("form[action]").try(:attributes).try(:fetch, "action", nil).try(:value)
+    #TODO refactor this
+    #@found_action = page.at("form[action]").try(:attributes).try(:fetch, "action", nil).try(:value)
+    @found_action = page.at("form[action]") &&
+        page.at("form[action]").attributes &&
+        page.at("form[action]").attributes.fetch("action", nil) &&
+        page.at("form[action]").attributes.fetch("action", nil).value
     @has_form && !(@new_form && @edit_found) && (!@edit_form || @edit_found) && (!@expected_path || (@found_action == @expected_path))
   end
 
