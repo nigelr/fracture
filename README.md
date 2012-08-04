@@ -1,50 +1,56 @@
 # Fracture
 Unified view testing for your view or controller specs.
 
-Fracture allows you to define text or selector once at the top of a spec file. It also allows grouping of multiple text snippets or selectors using one label.
+Fracture allows you to define text or selector once at the top of a spec file. It also allows grouping of multiple text or selectors snippets using one label.
 
 Defining what you are looking for in one place prevents issues when a name (or selector) you are searching for is changed on a view which would only result in one failing spec, the other spec checking for the non exisitence would not fail so you would not find this 'always' passing spec.
 
 
 ### Example
 
-To give you a simple example why would you use fracture gem, assume you have the test (psuedo code):
+To give you a simple example why would you use fracture gem, assume you have the following tests (psuedo code):
 
 <pre>
 As an Admin the 'Edit' button should appear
-As a User the 'Edit' button should not appear
+.... 
+(Somewhere further down in your spec)
+....
+As a User the 'Edit' button should *not* appear
 </pre>
 
 If 'Edit' was changed to 'Modify' the first test would fail although the second test would not fail. In a small spec this would be obvious to see although in a large file it might not be seen.
 
 With Fracture:
-Fracture.define_text(:change_it, "Edit")
-
+Fracture.define_text(:show_edit_button, "Edit")
+context "admin"
 ```ruby
-as admin: response.body.should have_fracture(:change_it)
-as user: response.body.should_not have_fracture(:change_it)
-</pre>
+response.body.should have_fracture(:change_it)
+```
+context "user"
+```ruby
+response.body.should_not have_fracture(:change_it)
 ```
 
 ## Installation:
-
+Gemfile
 ``` 
-gem install fracture
+gem "fracture"
 ```
 
 ## Usage:
-```ruby
 spec_helper.rb
-  config.after :all do
-    Fracture.clear
-  end
-or as a 1 linere
-  config.after(:all) { Fracture.clear }
-
-
-in your spec
-for controllers you will need to add *render_views*
+```ruby
+config.after :all do
+  Fracture.clear
+end
 ```
+or as a 1 liner
+```ruby
+config.after(:all) { Fracture.clear }
+```
+
+In your spec
+for controllers you will need to add *render_views*
 
 ```ruby
 require 'spec_helper'
@@ -80,20 +86,21 @@ end
 ### Text
 Single
 ```ruby
-Fracture.define_text(:edits, "edit", "edit all")
+Fracture.define_text(:edits, "Edit")
 ```
 Multiple
 ```ruby
-Fracture.define_text(:edits, "edit", "edit all")
+Fracture.define_text(:edits, "Edit", "Edit All")
 ```
 ### Selector
 ```ruby
 Fracture.define_selector(:label_1, "#an_id", ".a_class", ".another_class")
 ```
 
-Currently ther is no way to build text and selectors into one definition (future feature). Another future feature will be to support within.
+Currently there is no way to build text and selectors into one definition (future feature). Another future feature will be to support within.
 
 ## Matchers
+Example Definitions
 ```ruby
 Fracture.define_text(:lable_1, "Fred")
 Fracture.define_text(:label_2, "Barney", "Betty")
