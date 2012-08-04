@@ -35,7 +35,6 @@ or as a 1 linere
 in your spec
 for controllers you will need to add *render_views*
 
-<pre><code>
 ```ruby
 require 'spec_helper'
 
@@ -65,55 +64,54 @@ describe ContactsController do
   end
 end
 ```
-</code></pre>
 
 ## Definitions
 ### Text
 Single
-<pre><code>
+```ruby
 Fracture.define_text(:edits, "edit", "edit all")
-</code></pre>
+```
 Multiple
-<pre><code>
+```ruby
 Fracture.define_text(:edits, "edit", "edit all")
-</code></pre>
+```
 ### Selector
-<pre><code>
+```ruby
 Fracture.define_selector(:label_1, "#an_id", ".a_class", ".another_class")
-</code></pre>
+```
 
 Currently ther is no way to build text and selectors into one definition (future feature). Another future feature will be to support within.
 
 ## Matchers
-<pre><code>
+```ruby
 Fracture.define_text(:lable_1, "Fred")
 Fracture.define_text(:label_2, "Barney", "Betty")
 Fracture.define_text(:label_3, "Wilma")
-</code></pre>
+```
 
 Page should contain "Barney" and "Betty". Ignores any other definitions
-<pre><code>
+```ruby
 response.body.shoud have_fracture(:label_2)
-</code></pre>
+```
 
 Page should contain "Barney", "Betty", "Fred" and "Wilma"
-<pre><code>
+```ruby
 response.body.shoud have_fracture(:label_1, :label_2, :label_3)
-</code></pre>
+```
 or
-<pre><code>
+```ruby
 response.body.shoud have_all_fractures
-</code></pre>
+```
 
 Page should contain "Barney" and "Betty" and not "Fred" or "Wilma"
-<pre><code>
+```ruby
 response.body.shoud have_only_fractures(:label_2)
-</code></pre>
+```
 
 Page should contain "Barney", "Betty", "Fred" and not "Wilma"
-<pre><code>
+```ruby
 response.body.shoud have_all_fractures_except(:label_3)
-</code></pre>
+```
 
 
 
