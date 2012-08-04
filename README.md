@@ -20,10 +20,11 @@ If 'Edit' was changed to 'Modify' the first test would fail although the second 
 With Fracture:
 Fracture.define_text(:change_it, "Edit")
 
-<pre>
+```ruby
 as admin: response.body.should have_fracture(:change_it)
 as user: response.body.should_not have_fracture(:change_it)
 </pre>
+```
 
 ## Installation:
 
@@ -32,7 +33,7 @@ gem install fracture
 ```
 
 ## Usage:
-
+```ruby
 spec_helper.rb
   config.after :all do
     Fracture.clear
@@ -43,6 +44,7 @@ or as a 1 linere
 
 in your spec
 for controllers you will need to add *render_views*
+```
 
 ```ruby
 require 'spec_helper'
