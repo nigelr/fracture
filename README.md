@@ -5,7 +5,10 @@ Fracture allows you to define text or selector once at the top of a spec file. I
 
 Defining what you are looking for in one place prevents issues when a name (or selector) you are searching for is changed on a view which would only result in one failing spec, the other spec checking for the non exisitence would not fail so you would not find this 'always' passing spec.
 
-eg. (psuedo code)
+
+### Example
+
+To give you a simple example why would you use fracture gem, assume you have the test (psuedo code):
 
 <pre>
 As an Admin the 'Edit' button should appear
@@ -21,6 +24,12 @@ Fracture.define_text(:change_it, "Edit")
 as admin: response.body.should have_fracture(:change_it)
 as user: response.body.should_not have_fracture(:change_it)
 </pre>
+
+## Installation:
+
+``` 
+gem install fracture
+```
 
 ## Usage:
 
