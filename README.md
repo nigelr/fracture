@@ -44,10 +44,6 @@ config.after :all do
   Fracture.clear
 end
 ```
-or as a 1 liner
-```ruby
-config.after(:all) { Fracture.clear }
-```
 
 In your spec
 for controllers you will need to add *render_views*
@@ -109,26 +105,26 @@ Fracture.define_text(:label_3, "Wilma")
 
 Page should contain "Barney" and "Betty". Ignores any other definitions
 ```ruby
-response.body.shoud have_fracture(:label_2)
+response.body.should have_fracture(:label_2)
 ```
 
 Page should contain "Barney", "Betty", "Fred" and "Wilma"
 ```ruby
-response.body.shoud have_fracture(:label_1, :label_2, :label_3)
+response.body.should have_fracture(:label_1, :label_2, :label_3)
 ```
 or
 ```ruby
-response.body.shoud have_all_fractures
+response.body.should have_all_fractures
 ```
 
 Page should contain "Barney" and "Betty" and not "Fred" or "Wilma"
 ```ruby
-response.body.shoud have_only_fractures(:label_2)
+response.body.should have_only_fractures(:label_2)
 ```
 
 Page should contain "Barney", "Betty", "Fred" and not "Wilma"
 ```ruby
-response.body.shoud have_all_fractures_except(:label_3)
+response.body.should have_all_fractures_except(:label_3)
 ```
 
 
