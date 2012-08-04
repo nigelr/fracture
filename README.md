@@ -8,27 +8,34 @@ Defining what you are looking for in one place prevents issues when a name (or s
 
 ### Example
 
-To give you a simple example why would you use fracture gem, assume you have the following tests (psuedo code):
+To give you a simple example why would you use fracture gem, assume you have the following tests (without Fracture)
 
-<pre>
-As an Admin the 'Edit' button should appear
-.... 
-(Somewhere further down in your spec)
-....
-As a User the 'Edit' button should *not* appear
-</pre>
+context "admin" 
+```
+ response.body.should have_text("Edit")
+```
+...
+(Somewhere further down in your spec file)
+...
 
-If 'Edit' was changed to 'Modify' the first test would fail although the second test would not fail. In a small spec this would be obvious to see although in a large file it might not be seen.
+context "user" 
+```
+ response.body.should_not have_text("Edit")
+```
+If the word 'Edit' was changed in your view to 'Modify' the first test would fail although the second test would not fail. In a small spec this may be obvious to see although in a large file it might not be found. This would leave you with a never failing spec and if the logic controlling the display of this text broke and allowed for it to display when you are a user this would never be detected.
 
-With Fracture:
+####With Fracture:
+You define the text "Edit" once at the top of your spec and now it can be used multiple times within the spec. If you change the text in the view, you only need to change the Fracture.define_text(:show_edit_button, "Modify") and all test using that definition will change.
+```ruby
 Fracture.define_text(:show_edit_button, "Edit")
+```
 context "admin"
 ```ruby
-response.body.should have_fracture(:change_it)
+response.body.should have_fracture(:show_edit_button)
 ```
 context "user"
 ```ruby
-response.body.should_not have_fracture(:change_it)
+response.body.should_not have_fracture(:show_edit_button)
 ```
 
 ## Installation:
