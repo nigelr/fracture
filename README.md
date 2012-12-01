@@ -8,18 +8,20 @@ Defining what you are looking for in one place prevents issues when a name (or s
 
 ### Example
 
-To give you a simple example why would you use fracture gem, assume you have the following tests (without Fracture)
+A simple example why would you use the fracture gem, assume you have the following tests (without Fracture)
 
 context "admin" 
-```
+```ruby
  response.body.should have_text("Edit")
 ```
 ...
+
 (Somewhere further down in your spec file)
+
 ...
 
 context "user" 
-```
+```ruby
  response.body.should_not have_text("Edit")
 ```
 If the word 'Edit' was changed in your view to 'Modify' the first test would fail although the second test would not fail. In a small spec this may be obvious to see although in a large file it might not be found. This would leave you with a never failing spec and if the logic controlling the display of this text broke and allowed for it to display when you are a user this would never be detected.
@@ -51,9 +53,11 @@ config.after :all do
   Fracture.clear
 end
 ```
+This is to clear the set Fractures between each spec file
 
-In your spec
-for controllers you will need to add *render_views*
+
+#### In your spec
+If you want to test views from the controller spec you will need to add *render_views*, fracture will also work within view specs.
 
 ```ruby
 require 'spec_helper'
@@ -100,12 +104,12 @@ Fracture.define_text(:edits, "Edit", "Edit All")
 Fracture.define_selector(:label_1, "#an_id", ".a_class", ".another_class")
 ```
 
-Currently there is no way to build text and selectors into one definition (future feature). Another future feature will be to support within.
+Currently there is no way to build text and selectors into one definition (future feature). Another future feature will be to support 'within'.
 
 ## Matchers
 Example Definitions
 ```ruby
-Fracture.define_text(:lable_1, "Fred")
+Fracture.define_text(:label_1, "Fred")
 Fracture.define_text(:label_2, "Barney", "Betty")
 Fracture.define_text(:label_3, "Wilma")
 ```
@@ -134,8 +138,45 @@ Page should contain "Barney", "Betty", "Fred" and not "Wilma"
 response.body.should have_all_fractures_except(:label_3)
 ```
 
+### Forms
+Check to see if there is a form
+```ruby
+response.body.should have_a_form
+```
+Check to see if its a new form or editing (checks method is POST or PUT)
+```ruby
+response.body.should have_a_form.that_is_new
+response.body.should have_a_form.that_is_edit
+```
+Check to path form posts to
+```ruby
+response.body.should have_a_form.that_is_new.with_path_of("/tickets")
+response.body.should have_a_form.with_path_of(tickets_path)
+```
 
 
+## All Methods:
+
+* have_fracture(*labels)
+* have_all_fractures
+* have_all_fractures_except(*labels)
+* have_only_fractures(*labels)
+* have_a_form
+ - that_is_new
+ - that_is_edit
+ - with_path_of(path)
+
+# TODO
+
+* Support text and selector in one fracture
+
+## Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
 
 
 
