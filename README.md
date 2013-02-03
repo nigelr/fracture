@@ -65,8 +65,10 @@ require 'spec_helper'
 describe ContactsController do
   render_views
 
-  Fracture.define_text(:add, "New")
-
+  before(:all) do 
+    Fracture.define_text(:add, "New")
+  end
+    
   context "as admin" do
     describe "as an admin" do
       it "index" do
@@ -169,6 +171,7 @@ response.body.should have_a_form.with_path_of(tickets_path)
 # TODO
 
 * Support text and selector in one fracture
+* Support qty of expected fractures on page (selector count)
 
 ## Contributing
 
