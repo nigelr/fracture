@@ -156,6 +156,13 @@ response.body.should have_a_form.that_is_new.with_path_of("/tickets")
 response.body.should have_a_form.with_path_of(tickets_path)
 ```
 
+### Integration Specs Example
+```ruby
+page.body.should have_only_fractures(:label_2)
+```
+
+
+
 
 ## All Methods:
 
