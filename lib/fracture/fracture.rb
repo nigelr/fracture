@@ -64,13 +64,25 @@ class Fracture
     all.keys - list_to_s(Array(fractures).flatten)
   end
 
+  #def do_check page, label
+  #  #page = page.response.body if page.is_a? CompaniesController
+  #  page = page.response.body if page.respond_to?(:response)
+  #  page = Nokogiri::HTML.parse(page)
+  #  if text?
+  #    page.text.include?(label)
+  #  else
+  #    page.at label
+  #  end
+  #end
   def do_check page, label
-    #page = page.response.body if page.is_a? CompaniesController
-    page = Nokogiri::HTML.parse(page)
+    page = page.response.body if page.respond_to?(:response)
+
+    page_parsed = Nokogiri::HTML.parse(page)
+
     if text?
-      page.text.include?(label)
+      page_parsed.text.include?(label)
     else
-      page.at label
+      page_parsed.at label
     end
   end
 
