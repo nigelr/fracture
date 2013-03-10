@@ -66,7 +66,7 @@ def common_error(actual, results)
   unless results[:should_not].empty?
     errors += "expected not to find '#{results[:should_not].map { |i| i[:label] }.join(", ")}'"
   end
-  errors += "\non page of\n #{actual}"
+  errors += "\non page of\n #{Fracture.get_body(actual)}"
 end
 
 RSpec::Matchers.define :have_a_form do
