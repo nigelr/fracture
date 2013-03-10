@@ -64,19 +64,7 @@ class Fracture
     all.keys - list_to_s(Array(fractures).flatten)
   end
 
-  #def do_check page, label
-  #  #page = page.response.body if page.is_a? CompaniesController
-  #  page = page.response.body if page.respond_to?(:response)
-  #  page = Nokogiri::HTML.parse(page)
-  #  if text?
-  #    page.text.include?(label)
-  #  else
-  #    page.at label
-  #  end
-  #end
   def do_check page, label
-    page = page.response.body if page.respond_to?(:response)
-
     page_parsed = Nokogiri::HTML.parse(page)
 
     if text?
@@ -87,6 +75,7 @@ class Fracture
   end
 
   def self.test_fractures(page, is_not, fracture_labels, reverse_fracture_labels=[])
+    page = self.get_body(page)
     failures = {}
     failures[:should] = []
     failures[:should_not] = []
@@ -120,5 +109,18 @@ class Fracture
     end
     failures.merge!(passed: (failures[:should].empty? && failures[:should_not].empty?))
     failures
+  end
+
+  def self.get_body(page)
+    case
+      when page.respond_to?(:response) # Controller
+        page.response.body
+      when page.respond_to?(:body)
+        page.body
+      when page.kind_of?(String)
+        page
+      else
+        raise 'Page sent is not valid'
+    end
   end
 end

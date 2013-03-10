@@ -72,4 +72,46 @@ describe Fracture do
       it("should not find it") { @first.do_check("z b", "a").should be_false }
     end
   end
+
+  context 'check if page is html or Controller or Integration class' do
+    let(:html) { '<html><body></body></html>' }
+
+    class ControllerTest
+      def initialize html
+        @html = html
+      end
+
+      def response
+        self
+      end
+
+      def body
+        @html
+      end
+    end
+
+    class IntegrationTest
+      def initialize html
+        @html = html
+      end
+
+      def body
+        @html
+      end
+    end
+
+    describe '#get_body' do
+      it('just return html when sent') do
+        Fracture.get_body(html).should == html
+      end
+
+      it('get response.body from Controller') do
+        Fracture.get_body(ControllerTest.new(html)).should == html
+      end
+
+      it('get response.body from Integration') do
+        Fracture.get_body(IntegrationTest.new(html)).should == html
+      end
+    end
+  end
 end
