@@ -84,7 +84,7 @@ describe ContactsController do
       it "index" do
         login_as :user # psuedo code for example
         get :index
-        response.body.should have_fracture(:add)
+        response.body.should_not have_fracture(:add)
       end
     end
   end
@@ -179,6 +179,7 @@ page.body.should have_only_fractures(:label_2)
 
 * Support text and selector in one fracture
 * Support qty of expected fractures on page (selector count)
+* Support Rake task to display matrix of context and fractures (to see if all are covered)
 
 ## Contributing
 
