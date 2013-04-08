@@ -1,4 +1,4 @@
-# Fracture
+# Fracture [![Gem Version](https://badge.fury.io/rb/fracture.png)](http://badge.fury.io/rb/fracture)
 Unified view testing for your view or controller specs.
 
 Fracture allows you to define text or selector once at the top of a spec file. It also allows grouping of multiple text or selectors snippets using one label.
