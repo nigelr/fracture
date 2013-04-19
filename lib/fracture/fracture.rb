@@ -16,6 +16,7 @@ class Fracture
   def self.define_selector label, *items
     @all ||= {}
     raise "#{label} has already been defined" if @all[label.to_s]
+    items = ["##{label}"] if items.empty?
     @all[label.to_s] = self.new(label, items.flatten, false)
   end
 

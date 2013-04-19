@@ -14,6 +14,22 @@ describe Fracture do
     end
   end
 
+  context 'items' do
+    context 'items blank on define_selector' do
+      it 'should set item to label name starting with #' do
+        Fracture.define_selector(:hello).items.should == ['#hello']
+      end
+    end
+    context 'when items set' do
+      it 'should set item' do
+        Fracture.define_selector(:hello, '#meme').items.should == ['#meme']
+      end
+      it 'should set multiple items' do
+        Fracture.define_selector(:hello, '#meme', '.wtf').items.should == ['#meme', '.wtf']
+      end
+    end
+  end
+
   context "with data" do
     before do
       @first = Fracture.define_text(:a, "a")
