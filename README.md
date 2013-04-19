@@ -105,6 +105,10 @@ Fracture.define_text(:edits, "Edit", "Edit All")
 ```ruby
 Fracture.define_selector(:label_1, "#an_id", ".a_class", ".another_class")
 ```
+If the items is left blank then the label will be used as the item as an id selector
+```ruby
+Fracture.define_selector(:label_1)   # equiv. Fracture.define_selector(:label_1, '#label_1')
+```
 
 Currently there is no way to build text and selectors into one definition (future feature). Another future feature will be to support 'within'.
 
