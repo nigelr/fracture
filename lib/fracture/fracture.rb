@@ -1,10 +1,13 @@
-class Fracture
-  attr_accessor :label, :items, :is_text
+require 'active_support/inflector'
 
-  def initialize label, items, is_text
+class Fracture
+  attr_accessor :label, :items, :is_text, :is_path
+
+  def initialize label, items, is_text, is_path=false
     self.label = label
     self.items = Array(items)
     self.is_text = is_text
+    self.is_path = is_path
   end
 
   def self.define_text label, *items
@@ -20,24 +23,25 @@ class Fracture
     @all[label.to_s] = self.new(label, items.flatten, false)
   end
 
+  def self.define_path label, *items
+    @all ||= {}
+    raise "#{label} has already been defined" if @all[label.to_s]
+    #items = ["##{label}"] if items.empty?
+    @all[label.to_s] = self.new(label, items.flatten, false, true)
+  end
+
   def text?
     !!is_text
   end
 
+  def path?
+    !!is_path
+  end
+
   def self.find label
-    #if labels.is_a? Array
-    #  ret = []
-    #  labels.map do |label|
-    #    p label
-    #    ret = all[label.to_s]
-    #    raise "Fracture with Label of '#{label}' was not found" unless ret
-    #  end
-    #  p ret
-    #else
-      raise "No Fractures have been defined" if all.empty?
-      ret = all[label.to_s]
-      raise "Fracture with Label of '#{label}' was not found" unless ret
-    #end
+    raise 'No Fractures have been defined' if all.empty?
+    ret = all[label.to_s]
+    raise "Fracture with Label of '#{label}' was not found" unless ret
     ret
   end
 
@@ -73,6 +77,19 @@ class Fracture
     else
       page_parsed.at label
     end
+  end
+
+  def self.match_link page_parsed, link
+    items = link.split('_')
+    items.pop
+    case
+      when items.last.pluralize == items.last
+        items.join('\/d+\/')
+        page_parsed.css('a[href')
+    end
+
+
+
   end
 
   def self.test_fractures(page, is_not, fracture_labels, reverse_fracture_labels=[])

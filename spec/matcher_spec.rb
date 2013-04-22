@@ -4,6 +4,53 @@ require "fracture/fracture"
 require "fracture/matchers/matcher"
 
 describe Fracture do
+  context 'path' do
+    let (:body) {
+      <<BODY
+<body>
+    <a href="/companies">Index</a>
+    <a href="/companies/12">Show</a>
+    <a href="/companies/12/edit">Edit</a>
+    <a href="/companies/new">New</a>
+    <a href="/companies/12" data-method="delete">Delete</a>
+
+    <a href="/companies/12/contacts">Index</a>
+    <a href="/companies/12/contacts/345">Show</a>
+    <a href="/companies/12/contacts/345/edit">Edit</a>
+    <a href="/companies/12/contacts/new">New</a>
+    <a href="/companies/12/contacts/345" data-method="delete">Delete</a>
+</body>
+
+BODY
+    }
+=begin
+  # Examples
+  companies_link
+  company_link
+  edit_company_link
+  new_company_link
+  delete_company_link
+=end
+    let(:page_parsed) { Nokogiri::HTML.parse(body) }
+
+    it 'concept 3' do
+      build = []
+      page_parsed.css('a[href]').map do |item|
+        build << item['href']+(item['data-method'] ? '/delete' :'')
+      end
+      # index
+      p build.grep /\/companies\/\d+\/contacts$/
+      # show
+      p build.grep /\/companies\/\d+\/contacts\/\d+$/
+      # edit
+      p build.grep /\/companies\/\d+\/contacts\/\d+\/edit$/
+      # new
+      p build.grep /\/companies\/\d+\/contacts\/new$/
+      # delete
+      p build.grep /\/companies\/\d+\/contacts\/\d+\/delete$/
+    end
+  end
+
   context "form" do
     context "when no form exists" do
       before { @page = "<p>not a form</p>" }

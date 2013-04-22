@@ -7,6 +7,13 @@ describe Fracture do
 
   before { Fracture.clear }
 
+  context 'define_path' do
+    before { Fracture.define_path(:companies, 'companies_path') }
+    subject { Fracture.find(:companies) }
+    its(:items) { should == ['companies_path'] }
+    its(:path?) { should be_true }
+  end
+
   context "without data" do
     it("should be empty before use") { Fracture.all.should == {} }
     it "should not fail when no data set" do
