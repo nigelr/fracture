@@ -1,4 +1,4 @@
-## 0.11.2
+## 0.11.3
 
 * http://github.com/nigelr/fracture/issues/6
 shortened shoulda matcher style does not work for forms
