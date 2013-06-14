@@ -1,3 +1,8 @@
+## 0.11.2
+
+* http://github.com/nigelr/fracture/issues/6
+shortened shoulda matcher style does not work for forms
+
 ## 0.11.1
 
 * http://github.com/nigelr/fracture/issues/4

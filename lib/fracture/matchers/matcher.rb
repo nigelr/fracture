@@ -28,6 +28,21 @@ RSpec::Matchers.define :have_all_fractures do
   failure_message_for_should_not { |actual| common_error(actual, @results) }
 end
 
+RSpec::Matchers.define :have_no_fractures do
+  match do |page|
+    @results = Fracture.test_fractures page, false, nil, Fracture.all.keys
+    @results[:passed]
+  end
+
+  match_for_should_not do |page|
+    @results = Fracture.test_fractures page, true, nil, Fracture.all.keys
+    @results[:passed]
+  end
+
+  failure_message_for_should { |actual| common_error(actual, @results) }
+  failure_message_for_should_not { |actual| common_error(actual, @results) }
+end
+
 RSpec::Matchers.define :have_all_fractures_except do |*fracture_labels|
   match do |page|
     @results = Fracture.have_all_except_test(page, false, fracture_labels)
@@ -71,7 +86,7 @@ end
 
 RSpec::Matchers.define :have_a_form do
   match do |page|
-    page = Nokogiri::HTML.parse(page)
+    page = Nokogiri::HTML.parse(Fracture.get_body(page))
     @edit_found = page.at("input[type='hidden'][name='_method'][value='put']")
     @has_form = page.at("form[method='post']")
     #TODO refactor this
