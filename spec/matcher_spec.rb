@@ -66,12 +66,22 @@ BODY
         it("should not be an edit") { expect { @page.should have_a_form.that_is_edit }.to raise_error(RSpec::Expectations::ExpectationNotMetError, /Form is not an edit/) }
       end
       context "that_is_edit" do
-        before { @page += "<input type='hidden' name='_method' value='put'>" }
-        it "should not be a new form" do
-          expect { @page.should have_a_form.that_is_new }.to raise_error(RSpec::Expectations::ExpectationNotMetError, /Form is an edit/)
+        context "method is put" do
+          before { @page += "<input type='hidden' name='_method' value='put'>" }
+          it "should not be a new form" do
+            expect { @page.should have_a_form.that_is_new }.to raise_error(RSpec::Expectations::ExpectationNotMetError, /Form is an edit/)
+          end
+          it("should be an edit form") { @page.should have_a_form.that_is_edit }
+          it("should have a form") { @page.should have_a_form }
         end
-        it("should be an edit form") { @page.should have_a_form.that_is_edit }
-        it("should have a form") { @page.should have_a_form }
+        context "method is patch" do
+          before { @page += %q[<input name="_method" type="hidden" value="patch" />] }
+          it "should not be a new form" do
+            expect { @page.should have_a_form.that_is_new }.to raise_error(RSpec::Expectations::ExpectationNotMetError, /Form is an edit/)
+          end
+          it("should be an edit form") { @page.should have_a_form.that_is_edit }
+          it("should have a form") { @page.should have_a_form }
+        end
       end
       context "with_path_of" do
         it "should match path" do

@@ -87,7 +87,7 @@ end
 RSpec::Matchers.define :have_a_form do
   match do |page|
     page = Nokogiri::HTML.parse(Fracture.get_body(page))
-    @edit_found = page.at("input[type='hidden'][name='_method'][value='put']")
+    @edit_found = page.at("input[type='hidden'][name='_method'][value='put']") || page.at("input[type='hidden'][name='_method'][value='patch']")
     @has_form = page.at("form[method='post']")
     #TODO refactor this
     #@found_action = page.at("form[action]").try(:attributes).try(:fetch, "action", nil).try(:value)
