@@ -91,8 +91,8 @@ describe Fracture do
     describe "test_fracture"
 
     describe ".do_check" do
-      it("should find it") { @first.do_check("z a b", "a").should be_true }
-      it("should not find it") { @first.do_check("z b", "a").should be_false }
+      it("should find it") { @first.do_check(Nokogiri::HTML.parse("z a b"), "a").should be_true }
+      it("should not find it") { @first.do_check(Nokogiri::HTML.parse("z b"), "a").should be_false }
     end
   end
 

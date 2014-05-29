@@ -69,8 +69,8 @@ class Fracture
     all.keys - list_to_s(Array(fractures).flatten)
   end
 
-  def do_check page, label
-    page_parsed = Nokogiri::HTML.parse(page)
+  def do_check page_parsed, label
+    # page_parsed = Nokogiri::HTML.parse(page)
 
     if text?
       page_parsed.text.include?(label)
@@ -93,7 +93,7 @@ class Fracture
   end
 
   def self.test_fractures(page, is_not, fracture_labels, reverse_fracture_labels=[])
-    page = self.get_body(page)
+    page_parsed = Nokogiri::HTML.parse( self.get_body(page) )
     failures = {}
     failures[:should] = []
     failures[:should_not] = []
@@ -101,11 +101,11 @@ class Fracture
       fracture = Fracture.find(fracture_label)
       fracture.items.each do |label|
         if is_not
-          if fracture.do_check(page, label)
+          if fracture.do_check(page_parsed, label)
             failures[:should_not] << {fracture_label: fracture_label, label: label}
           end
         else
-          unless fracture.do_check(page, label)
+          unless fracture.do_check(page_parsed, label)
             failures[:should] << {fracture_label: fracture_label, label: label}
           end
         end
@@ -115,11 +115,11 @@ class Fracture
       fracture = Fracture.find(fracture_label)
       fracture.items.each do |label|
         unless is_not
-          if fracture.do_check(page, label)
+          if fracture.do_check(page_parsed, label)
             failures[:should_not] << {fracture_label: fracture_label, label: label}
           end
         else
-          unless fracture.do_check(page, label)
+          unless fracture.do_check(page_parsed, label)
             failures[:should] << {fracture_label: fracture_label, label: label}
           end
         end
