@@ -1,3 +1,7 @@
+## 0.11.4
+
+Add support for PATCH method in forms in rails 4 to be 'edit'
+
 ## 0.11.3
 
 * http://github.com/nigelr/fracture/issues/6
