@@ -4,13 +4,13 @@ RSpec::Matchers.define :have_fracture do |*fracture_labels|
     @results[:passed]
   end
 
-  match_for_should_not do |page|
+  match_when_negated do |page|
     @results = Fracture.test_fractures page, true, fracture_labels, nil
     @results[:passed]
   end
 
-  failure_message_for_should { |actual| common_error(actual, @results) }
-  failure_message_for_should_not { |actual| common_error(actual, @results) }
+  failure_message { |actual| common_error(actual, @results) }
+  failure_message_when_negated { |actual| common_error(actual, @results) }
 end
 
 RSpec::Matchers.define :have_all_fractures do
@@ -19,13 +19,13 @@ RSpec::Matchers.define :have_all_fractures do
     @results[:passed]
   end
 
-  match_for_should_not do |page|
+  match_when_negated do |page|
     @results = Fracture.test_fractures page, true, Fracture.all.keys, nil
     @results[:passed]
   end
 
-  failure_message_for_should { |actual| common_error(actual, @results) }
-  failure_message_for_should_not { |actual| common_error(actual, @results) }
+  failure_message { |actual| common_error(actual, @results) }
+  failure_message_when_negated { |actual| common_error(actual, @results) }
 end
 
 RSpec::Matchers.define :have_no_fractures do
@@ -34,13 +34,13 @@ RSpec::Matchers.define :have_no_fractures do
     @results[:passed]
   end
 
-  match_for_should_not do |page|
+  match_when_negated do |page|
     @results = Fracture.test_fractures page, true, nil, Fracture.all.keys
     @results[:passed]
   end
 
-  failure_message_for_should { |actual| common_error(actual, @results) }
-  failure_message_for_should_not { |actual| common_error(actual, @results) }
+  failure_message { |actual| common_error(actual, @results) }
+  failure_message_when_negated { |actual| common_error(actual, @results) }
 end
 
 RSpec::Matchers.define :have_all_fractures_except do |*fracture_labels|
@@ -49,13 +49,13 @@ RSpec::Matchers.define :have_all_fractures_except do |*fracture_labels|
     @results[:passed]
   end
 
-  match_for_should_not do |page|
+  match_when_negated do |page|
     @results = Fracture.have_all_except_test(page, true, fracture_labels)
     @results[:passed]
   end
 
-  failure_message_for_should { |actual| common_error(actual, @results) }
-  failure_message_for_should_not { |actual| common_error(actual, @results) }
+  failure_message { |actual| common_error(actual, @results) }
+  failure_message_when_negated { |actual| common_error(actual, @results) }
 end
 
 RSpec::Matchers.define :have_only_fractures do |*fracture_labels|
@@ -64,13 +64,13 @@ RSpec::Matchers.define :have_only_fractures do |*fracture_labels|
     @results[:passed]
   end
 
-  match_for_should_not do |page|
+  match_when_negated do |page|
     @results = Fracture.have_only_test(page, true, fracture_labels)
     @results[:passed]
   end
 
-  failure_message_for_should { |actual| common_error(actual, @results) }
-  failure_message_for_should_not { |actual| common_error(actual, @results) }
+  failure_message { |actual| common_error(actual, @results) }
+  failure_message_when_negated { |actual| common_error(actual, @results) }
 end
 
 def common_error(actual, results)
@@ -98,7 +98,7 @@ RSpec::Matchers.define :have_a_form do
     @has_form && !(@new_form && @edit_found) && (!@edit_form || @edit_found) && (!@expected_path || (@found_action == @expected_path))
   end
 
-  match_for_should_not do |page|
+  match_when_negated do |page|
     raise "Cannot use should_not chained with .is_for, .that_is_edit or .with_path_of " if @new_form || @edit_form || @expected_path
     page = Nokogiri::HTML.parse(page)
     !page.at("form[method='post']")
@@ -109,7 +109,7 @@ RSpec::Matchers.define :have_a_form do
   chain(:that_is_edit) { @edit_form = true }
   #chain(:with_path) { |path| @expected_path = path }
   chain(:with_path_of) { |path| @expected_path = path }
-  failure_message_for_should do
+  failure_message do
     ret = case
       when !@has_form
         "expected to find a form on the page\n"
@@ -124,5 +124,5 @@ RSpec::Matchers.define :have_a_form do
     end
     ret
   end
-  failure_message_for_should_not { "expected not to find a form on the page" }
+  failure_message_when_negated { "expected not to find a form on the page" }
 end

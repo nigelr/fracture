@@ -1,3 +1,7 @@
+## 0.12.0
+
+Change custom matchers to support rspec 3
+
 ## 0.11.4
 
 Add support for PATCH method in forms in rails 4 to be 'edit'
